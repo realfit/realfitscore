@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/estimate", "destination": "/realfitscore.html" },
+    { "source": "/", "destination": "/realfitscore-home.html" }
+  ]
+}

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>REALFIT Absolute Score&#8482; &#8212; A Proposal for Universal Fitness Measurement</title>
+<meta name="description" content="The REALFIT Absolute Score is our proposal for a universal fitness benchmark &#8212; a single, comparable number for overall physical fitness, built openly on FITDAT.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f0e0c;
+    --muted: #5a5855;
+    --faint: #9a9790;
+    --rule: #dedad4;
+    --bg: #f8f7f4;
+    --blue: #185EA5;
+    --teal: #1D9E75;
+    --amber: #b8860b;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink);
+    background: var(--bg);
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* HEADER */
+  header {
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 60px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .wordmark {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .wordmark span { color: var(--blue); font-weight: 300; }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .header-right a {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--faint);
+    text-decoration: none;
+    letter-spacing: .04em;
+  }
+  .header-right a:hover { color: var(--ink); }
+  .header-cta {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--blue) !important;
+    border: 1px solid var(--blue);
+    padding: 6px 14px;
+    border-radius: 2px;
+    transition: all .15s;
+  }
+  .header-cta:hover { background: var(--blue); color: #fff !important; text-decoration: none !important; }
+
+  /* MAIN */
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 80px 60px 120px;
+  }
+
+  /* OPENING */
+  .opening {
+    margin-bottom: 64px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .opening-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: clamp(30px, 4.2vw, 48px);
+    font-weight: 400;
+    line-height: 1.08;
+    margin-bottom: 28px;
+    letter-spacing: -.01em;
+  }
+  .lede {
+    font-size: 21px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  h2 {
+    font-size: clamp(22px, 2.8vw, 30px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -.01em;
+  }
+  p {
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  p:last-child { margin-bottom: 0; }
+  p strong { font-weight: 500; color: var(--ink); }
+
+  /* COMPONENTS TABLE */
+  .components {
+    margin: 28px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .component-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 60px;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .comp-name {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .comp-desc {
+    font-size: 17px;
+    color: var(--muted);
+  }
+  .comp-weight {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--faint);
+    text-align: right;
+  }
+
+  /* CALLOUT BOXES */
+  .callout {
+    border: 1px solid var(--rule);
+    padding: 28px 32px;
+    margin: 32px 0;
+    background: #fff;
+  }
+  .callout-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 10px;
+  }
+  .callout h3 {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .callout p {
+    font-size: 17px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+  .callout-note {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--faint);
+    font-style: normal;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .callout-link {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--blue);
+    display: inline-block;
+  }
+  .callout.dark {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .callout.dark .callout-label { color: rgba(255,255,255,.3); }
+  .callout.dark h3 { color: #fff; }
+  .callout.dark p { color: rgba(255,255,255,.5); }
+  .callout.dark .callout-note { color: rgba(255,255,255,.3); }
+  .callout.dark .callout-link { color: #e8f02a; }
+  .callout.teal-border { border-left: 3px solid var(--teal); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 32px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    background: var(--bg);
+  }
+  .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+  .footer-links a {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--faint);
+    text-decoration: none;
+  }
+  .footer-links a:hover { color: var(--ink); }
+  .footer-copy {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    color: var(--faint);
+  }
+
+  /* ECO FOOTER */
+  .eco-footer {
+    background: #0a0908;
+    padding: 13px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .ef-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.18);
+  }
+  .ef-links { display: flex; gap: 18px; flex-wrap: wrap; }
+  .ef-links a {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,.32);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .ef-links a:hover { color: rgba(255,255,255,.7); }
+  .ef-copy {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,.14);
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 0 20px; }
+    .header-right a:not(.header-cta) { display: none; }
+    main { padding: 48px 24px 80px; }
+    .component-row { grid-template-columns: 1fr 40px; }
+    .comp-desc { display: none; }
+    footer { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://realfit.com" class="wordmark"><span>Real</span>FIT&#174;</a>
+  <div class="header-right">
+    <a href="https://realfit.com">REALFIT.com</a>
+    <a href="https://fitdat.com">FITDAT.com</a>
+    <a href="https://fitdat.com/scoring-spec.html">Methodology</a>
+    <a href="/estimate" class="header-cta">Estimate my score &rarr;</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- OPENING -->
+  <div class="opening">
+    <div class="opening-label">REALFIT Absolute Score&#8482;</div>
+    <h1>In a world full of numbers,<br>overall fitness has none.</h1>
+    <p class="lede">Golf has a handicap. Finance has a credit score. There is no equivalent for overall physical fitness &#8212; no single number, no baseline, no way to track progress over time. The REALFIT Absolute Score is our proposal for changing that.</p>
+  </div>
+
+  <!-- THE PROPOSAL -->
+  <div class="section">
+    <h2>A proposal, not a proclamation.</h2>
+    <p>We are not claiming the REALFIT Absolute Score is the definitive measure of human fitness. We are saying it is a rigorous, transparent, and reproducible attempt to answer a question that nobody has answered well: <strong>how fit are you, overall?</strong></p>
+    <p>The score is built on FITDAT&#174; &#8212; the open language of fitness developed by REALFIT. Every test, every protocol, every weighting decision is documented and publicly available. We have exposed the entire methodology because we believe transparency is the foundation of trust. Examine it. Critique it. Build on it.</p>
+    <p>Think of it the way the first credit scoring models were received &#8212; not as perfect, but as a principled starting point for something the world needed. This is ours for fitness.</p>
+  </div>
+
+  <!-- WHAT IT MEASURES -->
+  <div class="section">
+    <h2>What it measures.</h2>
+    <p>The REALFIT Absolute Score measures overall physical fitness across six components, expressed as a single number from 0 to 1,000. Thirteen tests. One score. All the methodology is open.</p>
+
+    <div class="components">
+      <div class="component-row">
+        <span class="comp-name">Cardiovascular<br>Endurance</span>
+        <span class="comp-desc">5K run or Concept2 row 2,000m &#8212; your choice</span>
+        <span class="comp-weight">25%</span>
+      </div>
+      <div class="component-row">
+        <span class="comp-name">Muscular<br>Strength</span>
+        <span class="comp-desc">Bench press and back squat one-rep max</span>
+        <span class="comp-weight">15%</span>
+      </div>
+      <div class="component-row">
+        <span class="comp-name">Muscular<br>Endurance</span>
+        <span class="comp-desc">Pull-ups, push-ups, and plank hold</span>
+        <span class="comp-weight">15%</span>
+      </div>
+      <div class="component-row">
+        <span class="comp-name">Power</span>
+        <span class="comp-desc">Standing long jump, med ball throw &#8212; these tests also express Agility</span>
+        <span class="comp-weight">15%</span>
+      </div>
+      <div class="component-row">
+        <span class="comp-name">Speed</span>
+        <span class="comp-desc">40 yard dash and 400m sprint</span>
+        <span class="comp-weight">15%</span>
+      </div>
+      <div class="component-row">
+        <span class="comp-name">Agility</span>
+        <span class="comp-desc">Shuttle run, squat thrust jumps &#8212; these tests also express Power</span>
+        <span class="comp-weight">15%</span>
+      </div>
+    </div>
+
+    <p>Note that several tests contribute to more than one component &#8212; a standing long jump, for example, expresses both Power and Agility. The component assignments and their rationale are part of the FITDAT test definitions. Cardiovascular endurance carries more weight because the research on its relationship to long-term health outcomes is the most robust. Everything else is weighted equally. The full rationale for every decision is at <a href="https://fitdat.com/scoring-spec.html">fitdat.com/scoring-spec.html</a>.</p>
+  </div>
+
+  <!-- WHAT YOU GET -->
+  <div class="section">
+    <h2>What you get from it.</h2>
+    <p>A score is only useful if it means something over time and across contexts. Here is what the REALFIT Absolute Score gives you that no isolated fitness test can.</p>
+
+    <p>Most fitness tracking gives you isolated numbers with no context. The Absolute Score gives you a universal standard &#8212; a number that means the same thing whether you test at a gym in Dallas or a facility in London. More importantly, it gives you a baseline you can actually measure improvement against.</p>
+    <p>Every result is stored over time &#8212; best and latest across all thirteen tests &#8212; so you can see exactly how your fitness is changing, not just how you performed on any given day. The component breakdown shows you where you are strong and where the real opportunity for improvement lies. A target score planner lets you set a goal and see precisely which tests, improved by how much, get you there.</p>
+    <p>When you are ready to share or document your fitness, a full PDF assessment report can be generated from any certified result. And if you want to compare yourself directly with another REALFIT athlete, an instant QR comparison gives you a side-by-side profile in real time.</p>
+    <p>The self-reported estimator gives you a preview of all of this. The full experience &#8212; history, comparison, planning, and certified results &#8212; is in the iOS app.</p>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="section">
+    <h2>We exposed every decision.</h2>
+    <p>Most fitness scoring systems are black boxes. You get a number and are expected to trust it. We did the opposite. Every test selection, every weighting decision, every scoring table, every normalization method is documented in full on FITDAT.</p>
+    <p>We did this because we believe the fitness community deserves to know exactly how a score is calculated before they are asked to trust it. And because we believe the best way to earn trust as a standards institution is to be fully transparent about how the standard was built.</p>
+    <p>If you find a flaw in our methodology, we want to know. If you want to build a different score set on the same FITDAT tests &#8212; with different weights, different tests, a different purpose &#8212; the tools are there.</p>
+    <p><a href="https://fitdat.com/scoring-spec.html">Read the full Absolute Score methodology on FITDAT &rarr;</a></p>
+  </div>
+
+  <!-- ESTIMATE CALLOUT -->
+  <div class="section">
+    <div class="callout teal-border">
+      <div class="callout-label">Try it</div>
+      <h3>Estimate your Absolute Score</h3>
+      <p>Enter your results across all 13 tests and see your estimated score instantly. No account required.</p>
+      <span class="callout-note">Self-reported estimate only. This is not a certified result and is not valid for institutional, competitive, or professional use. Results are as accurate as the inputs you provide.</span>
+      <a href="/estimate" class="callout-link">Go to the estimator &rarr;</a>
+    </div>
+    <p style="font-size:15px;margin-top:16px">Want to focus on a single test first? <a href="https://scoremyfitness.com">ScoreMyFitness</a> offers animated, interactive tools for individual tests &#8212; bench press, med ball throw, 40 yard dash, and more.</p>
+  </div>
+
+  <!-- CERTIFIED RESULTS -->
+  <div class="section">
+    <h2>Self-reported is a starting point.<br>Certified is something you can stand behind.</h2>
+    <p>An estimated score is useful for understanding where you stand and tracking your own progress. But a certified result &#8212; administered and verified by a REALFIT Certified Official &#8212; is a different thing entirely.</p>
+    <p>A certified result carries an auditable chain of custody. Every test was administered according to FITDAT protocol, witnessed and verified by a credentialed Official. It is valid for 90 days. It is the only class of REALFIT result recognised for institutional, competitive, or professional use.</p>
+    <p>The difference is the same as the difference between self-reported income and verified income on a loan application. Same data type. Fundamentally different institutional trust.</p>
+    <p><span style="font-family:'DM Sans',sans-serif;font-size:14px;color:var(--faint)">Finding a REALFIT Certified Official &#8212; <em>coming soon.</em></span></p>
+  </div>
+
+  <!-- iOS APP -->
+  <div class="callout dark">
+    <div class="callout-label">Coming soon</div>
+    <h3>The REALFIT iOS app</h3>
+    <p>The full certified experience. Certified scores, complete history, instant QR athlete comparison, component analytics, target score planner, and shareable PDF assessment reports.</p>
+    <span class="callout-note">Join the waitlist to be notified at launch.</span>
+    <a href="mailto:hello@realfit.com?subject=iOS app waitlist" class="callout-link">Join the waitlist &rarr;</a>
+  </div>
+
+  <!-- BECOME AN OFFICIAL -->
+  <div class="section" style="margin-top:32px">
+    <p style="font-size:15px;font-family:'DM Sans',sans-serif">Interested in administering certified REALFIT assessments? <span style="color:var(--faint)">Official certification program &#8212; <em>coming soon.</em></span></p>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://realfit.com">REALFIT</a>
+    <a href="https://fitdat.com">FITDAT</a>
+    <a href="https://fitdat.com/scoring-spec.html">Scoring spec</a>
+    <a href="/estimate">Score estimator</a>
+    <a href="https://realfit.com">REALFIT</a>
+    <a href="mailto:hello@realfit.com">Contact</a>
+  </div>
+  <span class="footer-copy">&copy; 2026 REALFIT&#174; &middot; FITDAT&#174;</span>
+</footer>
+
+<div class="eco-footer">
+  <span class="ef-label">REALFIT&#174; ecosystem</span>
+  <div class="ef-links">
+    <a href="https://realfit.com">REALFIT.com</a>
+    <a href="https://fitdat.com">FITDAT.com</a>
+    <a href="https://realfitscore.com">Absolute Score</a>
+    <a href="https://scoremyfitness.com">ScoreMyFitness</a>
+    <a href="https://scoremy40.com">ScoreMy40</a>
+    <a href="https://fitdat.com/scoring-spec.html">Scoring spec</a>
+    <a href="mailto:hello@realfit.com">Contact</a>
+  </div>
+  <span class="ef-copy">&copy; 2026 REALFIT&#174;</span>
+</div>
+
+</body>
+</html>
