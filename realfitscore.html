@@ -10,14 +10,15 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#f5f4f2;--surface:#fff;--s2:#f0eee9;--s3:#e8e5de;--ink:#111;--ink2:#2a2927;--muted:#6b6860;--faint:#a09d98;--border:#dddad4;--border2:#c8c4bc;--blue:#1a56db;--blight:#e8f0fe;--teal:#1D9E75;--tlight:#e1f5ee;--gold:#b8860b;}
+[data-theme="dark"]{--bg:#141210;--surface:#1c1a18;--s2:#242220;--s3:#2c2a28;--ink:#f0ede8;--ink2:#d4d0ca;--muted:#9a9790;--faint:#5a5855;--border:#2a2825;--border2:#3a3835;--blight:rgba(58,123,255,0.12);--tlight:rgba(29,158,117,0.12);}
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;font-size:15px;color:var(--ink2);background:var(--bg);min-height:100vh}
 a{color:inherit}
 
 /* header */
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
-.logo{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-decoration:none;letter-spacing:-.01em}
-.logo .r{color:#185EA5}.logo .f{color:#1D9E75}
+.logo{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;text-decoration:none}
+.logo .r{color:#185EA5;font-weight:300}.logo .f{color:#0f0e0c;font-weight:600}
 .hcta{padding:8px 16px;background:#185EA5;color:#fff;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none}
 
 /* dev strip */
@@ -29,7 +30,8 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .score-hero{background:var(--surface);padding:28px 20px 24px;text-align:center;border-bottom:1px solid var(--border)}
 .sh-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
 .sh-score{font-family:'Barlow Condensed',sans-serif;font-size:88px;font-weight:900;line-height:1;letter-spacing:-.02em;color:var(--ink);transition:color .3s}
-  .sh-score.locked{color:var(--faint) !important;letter-spacing:.3em}
+  .sh-score.locked{color:#c8c4bc !important;letter-spacing:.1em;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
 .sh-band{font-size:14px;font-weight:600;padding:4px 14px;border-radius:7px;display:inline-block;margin-top:6px;letter-spacing:.02em;transition:all .25s}
 .sh-note{font-size:12px;color:var(--faint);margin-top:6px}
 .sh-comp-strip{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
@@ -91,6 +93,11 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 
 @media(max-width:500px){.sh-score{font-size:72px}.sh-comp{min-width:60px}}
 .sh-lock-msg{display:none;font-size:12px;color:var(--muted);margin-top:6px}
+.theme-btn{background:none;border:1px solid var(--border2);border-radius:4px;padding:5px 10px;cursor:pointer;font-size:12px;color:var(--muted);transition:all .15s;flex-shrink:0;font-family:'Inter',sans-serif}
+.theme-btn:hover{border-color:var(--ink);color:var(--ink)}
+.icon-sun,.icon-moon{display:none}
+[data-theme="dark"] .icon-moon{display:inline}
+:root:not([data-theme="dark"]) .icon-sun{display:inline}
 .sh-lock-msg.visible{display:block}
 .instructions{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:var(--muted);line-height:1.65}
 .instructions strong{color:var(--ink2);font-weight:500}
@@ -100,34 +107,18 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 </head>
 <body>
 <header>
-  <a href="/" class="logo"><span class="r">real</span><span class="f">FIT</span><span style="font-size:14px;font-weight:500;color:var(--muted);margin-left:8px;font-family:'Inter',sans-serif;">Score Estimator</span></a>
-  <a href="https://realfit.com" class="hcta">Get the app &rarr;</a>
-</header>
-<div class="dev">
-  <span class="dtag">Built on FITDAT</span>
-  Self-reported estimate &mdash; not a certified result &middot; Built on <a href="https://fitdat.com">FITDAT</a> &middot; <a href="https://fitdat.com/scoring-spec.html">Full methodology &rarr;</a>
-</div>
-
-<!-- Live score at top -->
-<div style="background:#fff8e1;border-bottom:1px solid #f0e0a0;padding:9px 20px;font-size:13px;color:#7a5c00;display:flex;align-items:center;gap:8px">
-  <span style="font-weight:700;font-size:14px">&#9888;</span>
-  <span><strong>Self-reported estimate only.</strong> Certified REALFIT scores are issued exclusively by a <a href="https://realfit.com" style="color:#7a5c00;font-weight:600;text-decoration:underline">REALFIT Certified Official</a>. Only certified results are recognised for institutional, competitive, or professional use.</span>
-</div>
-
-<!-- CONSUMER HERO -->
-<div style="background:#0a0f1a;padding:52px 24px 44px;text-align:center;border-bottom:1px solid #141820">
-  <div style="max-width:640px;margin:0 auto">
-    <div style="font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(29,158,117,.7);margin-bottom:20px">REALFIT&#174; Absolute Score&#8482;</div>
-    <h1 style="font-family:'EB Garamond',Georgia,serif;font-size:clamp(28px,4.5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:16px">In a world full of numbers,<br><em style="font-style:italic;color:rgba(255,255,255,.45)">overall fitness has none.</em></h1>
-    <p style="font-size:15px;color:rgba(255,255,255,.45);line-height:1.8;font-weight:300;max-width:480px;margin:0 auto 20px">No single number. No baseline. No way to track progress over time. The REALFIT Absolute Score is our proposal for changing that &#8212; a general population fitness benchmark, built openly on FITDAT&#174;, with all the methodology exposed.</p>
-    <div style="font-size:12px;color:rgba(29,158,117,.6);font-style:italic">Estimate yours below. Free, no account required.</div>
+  <a href="/" class="logo"><span class="r">Real</span><span class="f">FIT</span>&#174;<span style="font-size:11px;font-weight:500;color:var(--muted);margin-left:10px;padding-left:10px;border-left:1px solid var(--border);font-family:'Inter',sans-serif;letter-spacing:.04em">Absolute Score&#8482; &mdash; Estimator</span></a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode"><span class="icon-sun">&#9788;</span><span class="icon-moon">&#9790;</span></button>
+    <span style="font-size:13px;font-weight:500;color:var(--faint);font-family:'Inter',sans-serif;letter-spacing:.02em">App coming soon</span>
   </div>
-</div>
+</header>
 
 <div class="score-hero">
   <div class="sh-label">REALFIT Absolute Score &mdash; Self-Reported Estimate</div>
-  <div class="sh-score locked" id="topScore">&#8212;</div>
-  <div><span class="sh-band" id="topBand" style="background:var(--s2);color:var(--faint)">Complete all 13 tests to unlock your score</span></div>
+  <div class="sh-score locked" id="topScore">???</div>
+  <div style="font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:4px;letter-spacing:.04em" id="lockHint">Enter all 13 tests to unlock your score</div>
+  <div><span class="sh-band" id="topBand" style="background:var(--s2);color:var(--faint)">Your score is waiting</span></div>
   <div class="sh-lock-msg" id="lockMsg">Enter a result for every test to reveal your score</div>
   <div class="sh-note" id="topNote"></div>
   <div class="sh-progress">
@@ -168,17 +159,19 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 <!-- Test sliders -->
 <div class="tests">
   <div class="instructions">
-    <strong>Estimation only &mdash; this is not a certified result</strong>
-    <p style="margin-top:6px">This tool calculates your estimated REALFIT Absolute Score from self-reported results. Certified scores are issued exclusively by a <strong>REALFIT Certified Official</strong> who administers and verifies each test in person. Certified results earn a verified badge, are valid for 90 days, and are the only scores recognised for institutional use.</p>
-    <p style="margin-top:8px;color:var(--ink2)"><strong>How to use this estimator</strong></p>
+    <strong>How to use this estimator</strong>
     <ol>
       <li>Enter a result for all 13 tests to unlock your estimated score.</li>
-      <li>Slider tests &mdash; move the slider or type your value. Grey = Average (500) reference.</li>
-      <li>Timed tests &mdash; type your time in min : sec.</li>
+      <li>Slider tests &mdash; move the slider or type your value directly.</li>
+      <li>Timed tests &mdash; type your time in minutes and seconds.</li>
       <li>Choose either 5K Run or Concept2 Row for your cardio slot.</li>
     </ol>
   </div>
   <div id="testsContainer"></div>
+<div style="background:#fff8e1;border-bottom:1px solid #f0e0a0;padding:8px 20px;font-size:12px;color:#7a5c00;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+  <strong>Self-reported estimate only.</strong>
+  <span>Not a certified result &middot; <a href="https://fitdat.com/scoring-spec.html" style="color:#7a5c00;font-weight:500">Full methodology on FITDAT &rarr;</a></span>
+</div>
 </div>
 
 <script>
@@ -307,6 +300,8 @@ function render(){
   if(allDone && overall!=null){
     // Unlock — animate score in
     scoreEl.classList.remove("locked");
+    scoreEl.style.animation = 'none';
+    const lh=document.getElementById('lockHint'); if(lh) lh.style.display='none';
     scoreEl.textContent=overall;
     const band=BANDS.find(b=>overall>=b.min&&overall<=b.max)||BANDS[BANDS.length-1];
     bandEl.textContent=band.label;
@@ -805,14 +800,14 @@ function buildTests(){
   // App CTA
   const cta=document.createElement("div");
   cta.className="app-cta";
-  const ctaH=document.createElement("h3"); ctaH.textContent="Get a certified result";
-  const ctaP=document.createElement("p"); ctaP.textContent="This estimator uses the same scoring math as the REALFIT app — but only a REALFIT Certified Official can issue a verified result. Download the app to get certified, track history, and compare with other athletes.";
+  const ctaH=document.createElement("h3"); ctaH.textContent="Coming soon on the App Store";
+  const ctaP=document.createElement("p"); ctaP.textContent="The REALFIT app takes your score further — certified results, full history, component analytics, target score planner, QR athlete comparison, and shareable PDF reports.";
   const ctaList=document.createElement("div"); ctaList.className="app-cta-list";
   ["Get certified by a REALFIT Official — earn your verified badge","Track results over time — best & latest","Instant QR compare with any REALFIT athlete","Component map, target score planner, analytics","Shareable PDF assessment report"].forEach(txt=>{
     const item=document.createElement("div"); item.className="app-cta-item"; item.textContent=txt;
     ctaList.appendChild(item);
   });
-  const ctaBtn=document.createElement("a"); ctaBtn.href="https://realfit.com"; ctaBtn.className="app-btn"; ctaBtn.textContent="Get the REALFIT app →";
+  const ctaBtn=document.createElement("a"); ctaBtn.href="https://realfit.com"; ctaBtn.className="app-btn"; ctaBtn.textContent="Coming soon on the App Store"; ctaBtn.style.cursor="default"; ctaBtn.removeAttribute("href");
   cta.appendChild(ctaH); cta.appendChild(ctaP); cta.appendChild(ctaList); cta.appendChild(ctaBtn);
   container.appendChild(cta);
 
@@ -836,29 +831,25 @@ function setCardio(c,btn){
 buildTests();
 </script>
 
-<div style="background:var(--surface2,#f0eee9);border-top:1px solid var(--border,#dddad4);padding:20px 24px">
-  <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-    <span style="font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--faint,#a09d98);margin-right:4px">Also in the ecosystem</span>
-    <a href="https://realfit.com" style="font-size:12px;padding:5px 12px;border:1px solid var(--border,#dddad4);border-radius:4px;color:var(--muted,#6b6860);text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='#185EA5';this.style.color='#185EA5'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">REALFIT.com</a>
-    <a href="https://fitdat.com" style="font-size:12px;padding:5px 12px;border:1px solid var(--border,#dddad4);border-radius:4px;color:var(--muted,#6b6860);text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='#1D9E75';this.style.color='#1D9E75'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">FITDAT open library</a>
-    <a href="https://realfitscore.com" style="font-size:12px;padding:5px 12px;border:1px solid var(--border,#dddad4);border-radius:4px;color:var(--muted,#6b6860);text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='#534AB7';this.style.color='#534AB7'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Full score estimator</a>
-    <a href="https://scoremy40.com" style="font-size:12px;padding:5px 12px;border:1px solid var(--border,#dddad4);border-radius:4px;color:var(--muted,#6b6860);text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='#D85A30';this.style.color='#D85A30'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">ScoreMy40</a>
+<div style="background:var(--surface,#fff);border-top:1px solid var(--border,#dddad4);padding:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+  <div style="font-size:13px;color:var(--muted,#6b6860);display:flex;align-items:center;gap:6px">
+    <strong style="color:var(--ink,#111);font-family:'Barlow Condensed',sans-serif;letter-spacing:.04em">REALFIT Absolute Score&#8482;</strong>
+    <span style="color:var(--faint,#a09d98)">&middot;</span>
+    A <a href="https://realfit.com" style="color:var(--muted,#6b6860);text-decoration:none;transition:color .15s" onmouseover="this.style.color='#111'" onmouseout="this.style.color='var(--muted)'">REALFIT</a> App
   </div>
+  <div style="font-size:11px;color:var(--faint,#a09d98)">&copy; 2026 REALFIT&#174; &middot; All rights reserved</div>
 </div>
-<div style="background:#0f0e0c;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-    <span style="font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.22)">REALFIT&reg; ecosystem</span>
-  </div>
-  <div style="display:flex;gap:18px;flex-wrap:wrap">
-    <a href="https://realfit.com" style="font-size:12px;color:rgba(255,255,255,.38);text-decoration:none">REALFIT.com</a>
-    <a href="https://fitdat.com" style="font-size:12px;color:rgba(255,255,255,.38);text-decoration:none">FITDAT.com</a>
-    <a href="https://realfitscore.com" style="font-size:12px;color:rgba(255,255,255,.38);text-decoration:none">Score estimator</a>
-    <a href="https://scoremyfitness.com" style="font-size:12px;color:rgba(255,255,255,.38);text-decoration:none">ScoreMyFitness</a>
-    <a href="https://scoremy40.com" style="font-size:12px;color:rgba(255,255,255,.38);text-decoration:none">ScoreMy40</a>
-    <a href="https://fitdat.com/scoring-spec.html" style="font-size:12px;color:rgba(255,255,255,.38);text-decoration:none">Scoring spec</a>
-    <a href="mailto:hello@realfit.com" style="font-size:12px;color:rgba(255,255,255,.38);text-decoration:none">Contact</a>
-  </div>
-  <div style="font-size:11px;color:rgba(255,255,255,.18)">&copy; 2026 REALFIT&reg; &middot; FITDAT&reg;</div>
-</div>
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const dark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',dark?'':'dark');
+  localStorage.setItem('rfs-theme',dark?'light':'dark');
+}
+(function(){
+  const saved=localStorage.getItem('rfs-theme');
+  if(saved==='dark') document.documentElement.setAttribute('data-theme','dark');
+})();
+</script>
 </body>
 </html>
